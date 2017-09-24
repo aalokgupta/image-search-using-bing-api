@@ -4,7 +4,8 @@
 // init project
 var express = require('express');
 var app = express();
-
+var Search = require('bing-search');
+//var search = new Search('x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0');
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
 
@@ -17,7 +18,13 @@ app.get("/", function (request, response) {
 });
 
 app.get("/api/imagesearch/:image_type", function (request, response) {
-  response.send(dreams);
+  
+  var query = request.params["image_type"];
+  response.json({"image type ": query});
+  search.images(query, function(err, result){
+    
+  });
+  
 });
 
 app.get("/api/history", function (request, response) {
