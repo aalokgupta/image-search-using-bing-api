@@ -4,7 +4,10 @@
 // init project
 var express = require('express');
 var app = express();
-var Search = require('bing-search');
+var Bing = require('node-bing-api')({"accKey": 'x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0'});
+var util = require('util');
+var searchBing = util.promisify(Bing.web.bind(Bing));
+
 //var search = new Search('x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0');
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -20,10 +23,11 @@ app.get("/", function (request, response) {
 app.get("/api/imagesearch/:image_type", function (request, response) {
   
   var query = request.params["image_type"];
+  var count = request.params["offset"]
   response.json({"image type ": query});
-  search.images(query, function(err, result){
-    
-  });
+  // Bing.images(query, {count: 10}, function(err, result){
+  //   response.send(result);
+  // });
   
 });
 
