@@ -23,12 +23,17 @@ app.get("/", function (request, response) {
 
 app.get("/api/imagesearch/:image_type", function (request, response) {
   var query = request.params["image_type"];
-  var count = request.params["offset"]
+  var offset = request.params["offset"]
   // var body  = url.parse(request.body);
-  response.json({"image type ": query, "offset": request.query});
-  // Bing.images(query, {count: 10}, function(err, result){
-  //   response.send(result);
-  // });
+  // response.json({"image type ": query, "offset": request.query["offset"]});
+  Bing.images(query, {count: offset}, function(err, result){
+    // if(err){
+    //   response.json(err);
+    // }
+    // else{
+      response.json({"bing search result": result});  
+    // }
+  });
   
 });
 
