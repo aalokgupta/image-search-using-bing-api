@@ -6,7 +6,7 @@ var express = require('express');
 var app = express();
 var Bing = require('node-bing-api')({ "userId": 'd9af4f7a-ebae-447a-93f2-c1b393d49bb3',
                                     "accKey": "x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0",
-                                    "rootUri": "https://api.datamarket.azure.com/Bing/Search/v1/web"});
+                                    "rootUri": "https://api.cognitive.microsoft.com/bing/v5.0/search/Search/v1/web"});
 // var util = require('util');
 // var searchBing = util.promisify(Bing.web.bind(Bing));
 // var url = require('url');
