@@ -7,7 +7,7 @@ var app = express();
 var Bing = require('node-bing-api')({"accKey": 'x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0'});
 var util = require('util');
 var searchBing = util.promisify(Bing.web.bind(Bing));
-var url = require('url');
+// var url = require('url');
 
 //var search = new Search('x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0');
 // we've started you off with Express, 
@@ -24,9 +24,8 @@ app.get("/", function (request, response) {
 app.get("/api/imagesearch/:image_type", function (request, response) {
   var query = request.params["image_type"];
   var count = request.params["offset"]
-  var body  = url.parse(request.body);
-  request.send(body);
-  // response.json({"image type ": query, "Url": "abcd"});
+  // var body  = url.parse(request.body);
+  response.json({"image type ": query, "offset": request.query});
   // Bing.images(query, {count: 10}, function(err, result){
   //   response.send(result);
   // });
