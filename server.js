@@ -16,9 +16,15 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/api/imagesearch/:image_url", function (request, response) {
+app.get("/api/imagesearch/:image_type", function (request, response) {
   response.send(dreams);
 });
+
+app.get("/api/history", function (request, response) {
+  // search from db and then return the latest image search
+  //response.send(dreams);
+});
+
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
 app.post("/dreams", function (request, response) {
