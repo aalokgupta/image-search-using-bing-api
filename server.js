@@ -4,9 +4,10 @@
 // init project
 var express = require('express');
 var app = express();
-var Bing = require('node-bing-api')({"accKey": 'x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0'});
-var util = require('util');
-var searchBing = util.promisify(Bing.web.bind(Bing));
+var Bing = require('node-bing-api')({"accKey": 'x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0',
+                                    "rootUri": 'https://api.datamarket.azure.com/Bing/Search/v1/web'});
+// var util = require('util');
+// var searchBing = util.promisify(Bing.web.bind(Bing));
 // var url = require('url');
 
 //var search = new Search('x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0');
@@ -26,7 +27,7 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
   var offset = request.params["offset"]
   // var body  = url.parse(request.body);
   // response.json({"image type ": query, "offset": request.query["offset"]});
-  Bing.images(query, {count: offset}, function(err, res, result){
+  Bing.images(query, {count: offset,}, function(err, res, result){
     // if(err){
     //   response.json(err);
     // }
