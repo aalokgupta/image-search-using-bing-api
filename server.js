@@ -4,8 +4,8 @@
 // init project
 var express = require('express');
 var app = express();
-var Bing = require('node-bing-api')({"Ocp-Apim-Subscription-Key": "9b8d9befe668435285341b2ca24ccdfd",
-                                    "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images"});
+var Bing = require('node-bing-api')({accKey: "bed1467a29ea4067906325aeda14efd0",
+                                    rootUri: "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
 // var util = require('util');
 // var searchBing = util.promisify(Bing.web.bind(Bing));
 // var url = require('url');
