@@ -5,7 +5,7 @@
 var express = require('express');
 var app = express();
 var Bing = require('node-bing-api')({"Ocp-Apim-Subscription-Key": "bed1467a29ea4067906325aeda14efd0",
-                                    rootUri: "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
+                                    "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
 // var util = require('util');
 // var searchBing = util.promisify(Bing.web.bind(Bing));
 // var url = require('url');
@@ -27,7 +27,8 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
   var offset = request.params["offset"]
   // var body  = url.parse(request.body);
   // response.json({"image type ": query, "offset": request.query["offset"]});
-  Bing.images(query, {count: offset,}, function(err, res, result){
+  Bing.images(query, {count: offset,
+                     mkt: ""}, function(err, res, result){
     // if(err){
     //   response.json(err);
     // }
