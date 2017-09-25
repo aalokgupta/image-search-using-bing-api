@@ -4,7 +4,7 @@
 // init project
 var express = require('express');
 var app = express();
-var Bing = require('node-bing-api')({accKey: "bed1467a29ea4067906325aeda14efd0"});
+var Bing = require('node-bing-api')({accKey: "3b305717f96646a1ab00ecdf7e2fe003"});
                                     // "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
 // var util = require('util');
 // var searchBing = util.promisify(Bing.web.bind(Bing));
@@ -24,11 +24,11 @@ app.get("/", function (request, response) {
 
 app.get("/api/imagesearch/:image_type", function (request, response) {
   var query = request.params["image_type"];
-  var offset = request.params["offset"]
+  var offset = request.query["offset"]
   // var body  = url.parse(request.body);
   // response.json({"image type ": query, "offset": request.query["offset"]});
   Bing.images(query, {count: offset,
-                     mkt: ""}, function(err, res, result){
+                     market: "en-US"}, function(err, res, result){
     // if(err){
     //   response.json(err);
     // }
