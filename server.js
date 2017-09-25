@@ -25,18 +25,20 @@ app.get("/", function (request, response) {
 app.get("/api/imagesearch/:image_type", function (request, response) {
   var query = request.params["image_type"];
   var offset = request.query["offset"]
-  // var body  = url.parse(request.body);
-  // response.json({"image type ": query, "offset": request.query["offset"]});
-  Bing.images(query, {count: 1,
-                     market: "en-US"}, function(err, res, result){
-    if(err){
-      response.json(err);
-    }
-    else{
-      response.json({"url": result.queryExpansions[0]["thumbnail"]["thumbnailUrl"]});  
-    }
-  });
   
+  Bing.images(query, 
+              {count: 1, market: "en-US"}, 
+              function(err, res, result){
+                if(err){
+                  response.json(err);
+                }
+                else{
+                  // response.json({"url": result.queryExpansions[0]});  
+                  response.json({"text": result.queryExpansions[0]["text"],
+                                 "Display-Text": result.queryExpansions[0]["displaytext"],
+                                 "url": result.queryExpansions[0]["thumbnail"]["thumbnailUrl"]});  
+                }
+              });  
 });
 
 app.get("/api/history", function (request, response) {
