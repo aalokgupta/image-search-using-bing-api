@@ -6,9 +6,6 @@ var express = require('express');
 var app = express();
 var Bing = require('node-bing-api')({accKey: "3b305717f96646a1ab00ecdf7e2fe003"});
                                     // "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
-// var util = require('util');
-// var searchBing = util.promisify(Bing.web.bind(Bing));
-// var url = require('url');
 
 //var search = new Search('x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0');
 // we've started you off with Express, 
@@ -27,16 +24,21 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
   var offset = request.query["offset"]
   
   Bing.images(query, 
-              {count: 1, market: "en-US"}, 
+              {count: 1, offset: 10, market: "en-US"}, 
               function(err, res, result){
                 if(err){
                   response.json(err);
                 }
                 else{
-                  // response.json({"url": result.queryExpansions[0]});  
-                  response.json({"text": result.queryExpansions[0]["text"],
-                                 "Display-Text": result.queryExpansions[0]["displaytext"],
-                                 "url": result.queryExpansions[0]["thumbnail"]["thumbnailUrl"]});  
+                   // response.json({"url": result.queryExpansions[0]});
+                  var obj = [];
+                  for(var res in result.queryExpansions)
+                    {
+                      obj.push({"text": result.queryExpansions[res]["text"],
+                                 "Display-Text": result.queryExpansions[res]["displayText"],
+                                 "url": result.queryExpansions[res]["thumbnail"]["thumbnailUrl"]});      
+                    }
+                    response.json(obj);
                 }
               });  
 });
