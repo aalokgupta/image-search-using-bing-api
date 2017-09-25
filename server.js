@@ -29,12 +29,12 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
   // response.json({"image type ": query, "offset": request.query["offset"]});
   Bing.images(query, {count: 1,
                      market: "en-US"}, function(err, res, result){
-    // if(err){
-    //   response.json(err);
-    // }
-    // else{
-      response.json({"bing search result": result});  
-    // }
+    if(err){
+      response.json(err);
+    }
+    else{
+      response.json({"url": result.queryExpansions[0]["thumbnail"]["thumbnailUrl"]});  
+    }
   });
   
 });
