@@ -8,15 +8,9 @@ var app = express();
 var Bing = require('node-bing-api')({accKey: "3b305717f96646a1ab00ecdf7e2fe003"});
 
 //mongodb://<dbuser>:<dbpassword>@ds151004.mlab.com:51004/abcd
- var uri = 'mongodb://'+process.env.USER+':'+process.env.PASSWORD+'@'+process.env.HOST_NAME+':'+process.env.PORT_NO+'/'+process.env.DB;
+var uri = 'mongodb://'+process.env.USER+':'+process.env.PASSWORD+'@'+process.env.HOST_NAME+':'+process.env.PORT_NO+'/'+process.env.DB;
 var msg;
 
-MongoClient.connect(uri, function(err, db){
-  if(err)
-    console.log(err);
-  else
-    msg = "db connected with credntial = " + uri;
-});
 
 // "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
 //var search = new Search('x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0');
@@ -43,8 +37,8 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
                   response.json(err);
                 }
                 else{
-                   // response.json({"url": result.queryExpansions[0]});
                   var obj = [];
+                  insert_search_item_in_db(query);
                   for(var res in result.queryExpansions)
                     {
                       obj.push({"text": result.queryExpansions[res]["text"],
@@ -80,3 +74,16 @@ var dreams = [
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
+
+
+var insert_search_item_in_db = function(query){
+  MongoClient.connect(uri, function(err, db){
+    if(err)
+      console.log(err);
+    else{
+      var db_history = db.collection('songs');
+    }
+  });
+  
+}
