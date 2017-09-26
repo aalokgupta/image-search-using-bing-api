@@ -21,10 +21,10 @@ app.get("/", function (request, response) {
 
 app.get("/api/imagesearch/:image_type", function (request, response) {
   var query = request.params["image_type"];
-  var offset = request.query["offset"]
+  var offset = request.query["offset"] || 1;
   
   Bing.images(query, 
-              {count: 1, offset: 10, market: "en-US"}, 
+              {top: offset, market: "en-US"}, 
               function(err, res, result){
                 if(err){
                   response.json(err);
