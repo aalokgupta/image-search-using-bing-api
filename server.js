@@ -82,8 +82,13 @@ var insert_search_item_in_db = function(query){
     if(err)
       console.log(err);
     else{
-      var db_history = db.collection('songs');
+      var date = new Date();
+      var obj = [{"query-at": date, "query-string": query}]
+      db.collection('search_history').insert(obj, function(err, res){
+        if(err)
+          console.log("There is some problem in inserting the data");
+      });
+      db.close();
     }
   });
-  
 }
