@@ -45,8 +45,8 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
                                  "Display-Text": result.queryExpansions[res]["displayText"],
                                  "url": result.queryExpansions[res]["thumbnail"]["thumbnailUrl"]});      
                     }
-                    // response.json(obj);
-                    response.json({"DB Detail": msg});
+                    response.json(obj);
+                    //response.json({"DB Detail": msg});
                 }
               });  
 });
@@ -89,6 +89,16 @@ var insert_search_item_in_db = function(query){
           console.log("There is some problem in inserting the data");
       });
       db.close();
+    }
+  });
+}
+
+var find_latest_searh_history_from_db = function(){
+  MongoClient.connect(uri, function(err, db){
+    if(err)
+      console.log(err);
+    else{
+      db.find()
     }
   });
 }
