@@ -6,7 +6,20 @@ var express = require('express');
 var app = express();
 var Bing = require('node-bing-api')({accKey: "3b305717f96646a1ab00ecdf7e2fe003"});
 var mongoose = require('mongoose');
-                                    // "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
+
+var mongoDB = 'mongodb://localhost/my_database';
+
+mongoose.connect(mongoDB, {
+  useMongoClient: true
+});
+
+//Get the default connection
+var db = mongoose.connection;
+
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+// "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
 
 //var search = new Search('x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0');
 // we've started you off with Express, 
