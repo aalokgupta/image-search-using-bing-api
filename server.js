@@ -5,7 +5,7 @@
 var express = require('express');
 var app = express();
 var Bing = require('node-bing-api')({accKey: "3b305717f96646a1ab00ecdf7e2fe003"});
-var mongodb = require('mongodb');
+var mongoose = require('mongoose');
                                     // "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
 
 //var search = new Search('x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0');
