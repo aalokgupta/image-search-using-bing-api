@@ -1,18 +1,22 @@
-// server.js
+/// server.js
 // where your node app starts
 
 // init project
+var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var app = express();
 var Bing = require('node-bing-api')({accKey: "3b305717f96646a1ab00ecdf7e2fe003"});
-var mongoose = require('mongoose');
 
-var mongoDB = 'mongodb://localhost/my_database';
+//mongodb://<dbuser>:<dbpassword>@ds151004.mlab.com:51004/abcd
+var uri = 'mongodb://'+process.env.USER+':'+process.env.PASSWORD+'@'+process.env.HOST+':'+process.env.PORT+'/'+process.env.DB;
+var msg;
 
-mongoose.connect(mongoDB, {
-  useMongoClient: true
+MongoClient.connect(uri, function(err, db){
+  if(err)
+    console.log(err);
+  else
+    msg = "db connected with credntial = " + uri;
 });
-
 
 // "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
 //var search = new Search('x1kE54sILOhbBK8+HS3uHc010M+A1euytKKbKkuTzN0');
@@ -47,7 +51,8 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
                                  "Display-Text": result.queryExpansions[res]["displayText"],
                                  "url": result.queryExpansions[res]["thumbnail"]["thumbnailUrl"]});      
                     }
-                    response.json(obj);
+                    // response.json(obj);
+                    response.json({"DB Detail": msg});
                 }
               });  
 });
