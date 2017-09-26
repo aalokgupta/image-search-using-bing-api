@@ -2,13 +2,13 @@
 // where your node app starts
 
 // init project
-var MongoClient = require('mongodb').MongoClient;
+ var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var app = express();
 var Bing = require('node-bing-api')({accKey: "3b305717f96646a1ab00ecdf7e2fe003"});
 
 //mongodb://<dbuser>:<dbpassword>@ds151004.mlab.com:51004/abcd
-var uri = 'mongodb://'+process.env.USER+':'+process.env.PASSWORD+'@'+process.env.HOST+':'+process.env.PORT+'/'+process.env.DB;
+ var uri = 'mongodb://'+process.env.USER+':'+process.env.PASSWORD+'@'+process.env.HOST+':'+process.env.PORT+'/'+process.env.DB;
 var msg;
 
 MongoClient.connect(uri, function(err, db){
