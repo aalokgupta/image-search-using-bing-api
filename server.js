@@ -101,14 +101,10 @@ var find_latest_searh_history_from_db = function(){
     if(err)
       console.log(err);
     else{
-      db.collection('search_history').find({}, {"query-at": 1, "query-string": 1}, function(err, res){
-        if(err){
-          console.log(err);
-        }
-        else{
-          msg = [];
-          res.forEach(function(doc){
-            var res = {};
+      var cursor = db.collection('search_history').find({}, {"query-at": 1, "query-string": 1}).limit(1);
+      msg = [];
+      cursor.forEach(function(doc){
+           var res = {};
             res.query = doc["query-at"];
             res.str = doc["query-string"];
             msg.push({"time": doc["query-at"],
@@ -116,10 +112,27 @@ var find_latest_searh_history_from_db = function(){
           
             console.log("query-at"+ doc["query-at"],
                        "   query-string"+ doc["query-string"]);
-          });
-        }
-      });//.sort({"query-at": 1});
-    }
-    db.close();
+
+      });
+//       db.collection('search_history').find({}, {"query-at": 1, "query-string": 1}, function(err, res){
+//         if(err){
+//           console.log(err);
+//         }
+//         else{
+//           msg = [];
+//           res.forEach(function(doc){
+//             var res = {};
+//             res.query = doc["query-at"];
+//             res.str = doc["query-string"];
+//             msg.push({"time": doc["query-at"],
+//                      "query": doc["query-string"]});
+          
+//             console.log("query-at"+ doc["query-at"],
+//                        "   query-string"+ doc["query-string"]);
+//           });
+//         }
+//       });//.sort({"query-at": 1});
+     }
+   db.close();
   });
 }
