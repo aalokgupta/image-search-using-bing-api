@@ -2,14 +2,12 @@
 // where your node app starts
 
 // init project
+var dbHandler = require('./db-handler');
 var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var app = express();
 var Bing = require('node-bing-api')({accKey: "3b305717f96646a1ab00ecdf7e2fe003"});
 
-//mongodb://<dbuser>:<dbpassword>@ds151004.mlab.com:51004/abcd
-var uri = 'mongodb://'+process.env.USER+':'+process.env.PASSWORD+'@'+process.env.HOST_NAME+':'+process.env.PORT_NO+'/'+process.env.DB;
-var msg = [];
 
 
 // "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
@@ -39,7 +37,7 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
                 else{
                   var obj = [];
                   var count = 0;
-                  insert_search_item_in_db(query);
+                  dbHandler.insert_search_item_in_db(query);
                   for(var res in result.queryExpansions)
                     {
                       if(count < offset){
@@ -57,7 +55,8 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
 
 app.get("/api/history", function (request, response) {
   // search from db and then return the latest image search
-  find_latest_searh_history_from_db();
+  var msg = [];
+  msg = dbHandler.find_latest_searh_history_from_db();
   console.log("query = "+ JSON.stringify(msg));
   response.json(msg);
 });
@@ -83,42 +82,3 @@ var listener = app.listen(process.env.PORT, function () {
 
 
 
-var insert_search_item_in_db = function(query){
-  MongoClient.connect(uri, function(err, db){
-    if(err)
-      console.log(err);
-    else{
-      var date = new Date();
-      var obj = [{"query-at": date, "query-string": query}]
-      db.collection('search_history').insert(obj, function(err, res){
-        if(err)
-          console.log("There is some problem in inserting the data");
-      });
-      db.close();
-    }
-  });
-}
-
-
-var find_latest_searh_history_from_db = function(){
-  MongoClient.connect(uri, function(err, db){
-    if(err)
-      console.log(err);
-    else{
-      var cursor = db.collection('search_history').find({}, {"query-at": 1, "query-string": 1}).sort({"query-at": -1}).limit(5);
-      msg = [];
-      cursor.forEach(function(doc){
-           var res = {};
-            res.query = doc["query-at"];
-            res.str = doc["query-string"];
-            msg.push({"time": doc["query-at"],
-                     "query": doc["query-string"]});
-          
-            console.log("query-at"+ doc["query-at"],
-                       "   query-string"+ doc["query-string"]);
-
-      });
-    }
-   db.close();
-  });
-}
