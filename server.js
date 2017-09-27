@@ -54,7 +54,8 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
 app.get("/api/history", function (request, response) {
   // search from db and then return the latest image search
   find_latest_searh_history_from_db(response);
-  // response.json(msg);
+  console.log("query = "+ JSON.stringify(msg));
+  response.json(msg);
 });
 
 
@@ -106,14 +107,16 @@ var find_latest_searh_history_from_db = function(response){
         else{
           res.forEach(function(doc){
             var res = {};
-            res["query-at"] = doc["query-at"];
-            res["query-string"] = doc["query-string"];
-            msg.json(res);
+            res.query = doc["query-at"];
+            res.str = doc["query-string"];
+            msg.push({"time": doc["query-at"],
+                     "query": doc["query-string"]});
+          
             console.log("query-at"+ doc["query-at"],
                        "   query-string"+ doc["query-string"]);
           });
         }
-      });
+      }).sort("query-at": 1);
     }
     db.close();
   });
