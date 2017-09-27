@@ -53,7 +53,6 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
 
 app.get("/api/history", function (request, response) {
   // search from db and then return the latest image search
-  //msg = [];
   find_latest_searh_history_from_db();
   console.log("query = "+ JSON.stringify(msg));
   response.json(msg);
@@ -85,7 +84,7 @@ var insert_search_item_in_db = function(query){
     if(err)
       console.log(err);
     else{
-      var date = new Date().getTime();
+      var date = new Date();
       var obj = [{"query-at": date, "query-string": query}]
       db.collection('search_history').insert(obj, function(err, res){
         if(err)
@@ -95,6 +94,7 @@ var insert_search_item_in_db = function(query){
     }
   });
 }
+
 
 var find_latest_searh_history_from_db = function(){
   MongoClient.connect(uri, function(err, db){
@@ -106,6 +106,7 @@ var find_latest_searh_history_from_db = function(){
           console.log(err);
         }
         else{
+          msg = [];
           res.forEach(function(doc){
             var res = {};
             res.query = doc["query-at"];
