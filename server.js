@@ -53,7 +53,8 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
 
 app.get("/api/history", function (request, response) {
   // search from db and then return the latest image search
-  find_latest_searh_history_from_db(response);
+  //msg = [];
+  find_latest_searh_history_from_db();
   console.log("query = "+ JSON.stringify(msg));
   response.json(msg);
 });
@@ -95,7 +96,7 @@ var insert_search_item_in_db = function(query){
   });
 }
 
-var find_latest_searh_history_from_db = function(response){
+var find_latest_searh_history_from_db = function(){
   MongoClient.connect(uri, function(err, db){
     if(err)
       console.log(err);
@@ -116,7 +117,7 @@ var find_latest_searh_history_from_db = function(response){
                        "   query-string"+ doc["query-string"]);
           });
         }
-      }).sort("query-at": 1);
+      });//.sort({"query-at": 1});
     }
     db.close();
   });
