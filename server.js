@@ -101,7 +101,7 @@ var find_latest_searh_history_from_db = function(){
     if(err)
       console.log(err);
     else{
-      var cursor = db.collection('search_history').find({}, {"query-at": 1, "query-string": 1}).limit(1);
+      var cursor = db.collection('search_history').find({}, {"query-at": 1, "query-string": 1}).sort({"query-at": -1}).limit(5);
       msg = [];
       cursor.forEach(function(doc){
            var res = {};
