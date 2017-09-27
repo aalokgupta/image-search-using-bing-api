@@ -82,7 +82,7 @@ var insert_search_item_in_db = function(query){
     if(err)
       console.log(err);
     else{
-      var date = new Date();
+      var date = new Date().getTime();
       var obj = [{"query-at": date, "query-string": query}]
       db.collection('search_history').insert(obj, function(err, res){
         if(err)
