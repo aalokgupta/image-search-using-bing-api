@@ -98,7 +98,7 @@ var find_latest_searh_history_from_db = function(){
     if(err)
       console.log(err);
     else{
-      db.find()
+      db.find({}, {"query-at": 1, "query-s" })
     }
   });
 }
