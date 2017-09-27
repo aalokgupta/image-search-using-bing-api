@@ -9,7 +9,7 @@ var Bing = require('node-bing-api')({accKey: "3b305717f96646a1ab00ecdf7e2fe003"}
 
 //mongodb://<dbuser>:<dbpassword>@ds151004.mlab.com:51004/abcd
 var uri = 'mongodb://'+process.env.USER+':'+process.env.PASSWORD+'@'+process.env.HOST_NAME+':'+process.env.PORT_NO+'/'+process.env.DB;
-var msg;
+var msg = [];
 
 
 // "rootUri": "https://api.cognitive.microsoft.com/bing/v7.0/images?"});
@@ -53,7 +53,8 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
 
 app.get("/api/history", function (request, response) {
   // search from db and then return the latest image search
-  //response.send(dreams);
+  find_latest_searh_history_from_db();
+  response.json(msg);
 });
 
 
@@ -98,7 +99,19 @@ var find_latest_searh_history_from_db = function(){
     if(err)
       console.log(err);
     else{
-      db.find({}, {"query-at": 1, "query-s" })
+      db.collection('search_history').find({}, {"query-at": 1, "query-string": 1}, function(err, res){
+        if(err){
+          console.log(err);
+        }
+        else{
+          res.forEach(function(doc){
+            // msg.push({"query-time": doc["query-at"], 
+            //          "query-string": doc["query-string"]});
+            console.log("query-at"+ doc["query-at"],
+                       "   query-string"+ doc["query-string"]);
+          });
+        }
+      });
     }
   });
 }
