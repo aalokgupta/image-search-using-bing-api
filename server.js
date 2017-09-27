@@ -2,7 +2,7 @@
 // where your node app starts
 
 // init project
- var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var app = express();
 var Bing = require('node-bing-api')({accKey: "3b305717f96646a1ab00ecdf7e2fe003"});
@@ -31,19 +31,23 @@ app.get("/api/imagesearch/:image_type", function (request, response) {
   var offset = request.query["offset"] || 10;
   
   Bing.images(query, 
-              {top: offset, market: "en-US"}, 
+              {count: offset, market: "en-US"}, 
               function(err, res, result){
                 if(err){
                   response.json(err);
                 }
                 else{
                   var obj = [];
+                  var count = 0;
                   insert_search_item_in_db(query);
                   for(var res in result.queryExpansions)
                     {
-                      obj.push({"text": result.queryExpansions[res]["text"],
+                      if(count < offset){
+                        obj.push({"text": result.queryExpansions[res]["text"],
                                  "Display-Text": result.queryExpansions[res]["displayText"],
-                                 "url": result.queryExpansions[res]["thumbnail"]["thumbnailUrl"]});      
+                                 "url": result.queryExpansions[res]["thumbnail"]["thumbnailUrl"]});        
+                      }
+                      count++;
                     }
                     response.json(obj);
                     //response.json({"DB Detail": msg});
@@ -114,25 +118,7 @@ var find_latest_searh_history_from_db = function(){
                        "   query-string"+ doc["query-string"]);
 
       });
-//       db.collection('search_history').find({}, {"query-at": 1, "query-string": 1}, function(err, res){
-//         if(err){
-//           console.log(err);
-//         }
-//         else{
-//           msg = [];
-//           res.forEach(function(doc){
-//             var res = {};
-//             res.query = doc["query-at"];
-//             res.str = doc["query-string"];
-//             msg.push({"time": doc["query-at"],
-//                      "query": doc["query-string"]});
-          
-//             console.log("query-at"+ doc["query-at"],
-//                        "   query-string"+ doc["query-string"]);
-//           });
-//         }
-//       });//.sort({"query-at": 1});
-     }
+    }
    db.close();
   });
 }
